@@ -1099,7 +1099,9 @@ export const rules: Record<string, (Rule | Rule[])[]> = {
     {
       class: "UIButton",
       label: /^跳过/,
-      within: { class: /^(?:CYTSplashAdSkipView|LYCustomSkipOrCloseView)$/ },
+      within: {
+        class: /^(?:CYTSplashAdSkipView|LYCustomSkipOrCloseView|WBAdFlashAdView)$/,
+      },
     },
     { label: /^跳过/, within: { class: "QuMengSplashView" } },
     sdk.csj,
