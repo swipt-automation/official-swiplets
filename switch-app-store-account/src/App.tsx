@@ -4,12 +4,12 @@ import {
   Form,
   HStack,
   Host,
-  List,
   NavigationStack,
   ProgressView,
   SecureField,
   Section,
   Spacer,
+  SwipeActions,
   Text,
   TextField,
   Toolbar,
@@ -111,13 +111,23 @@ export default function App() {
               }
             >
               {row(device, strings.deviceAccount)}
-              <List.ForEach
-                onDelete={(indices) =>
-                  save(accounts.filter((_, index) => !indices.includes(index)))
-                }
-              >
-                {accounts.map((account) => row(account.email, account.email))}
-              </List.ForEach>
+              {accounts.map((account) => (
+                <SwipeActions key={account.email}>
+                  {row(account.email, account.email)}
+                  <SwipeActions.Actions>
+                    <Button
+                      label={strings.delete}
+                      systemImage="trash"
+                      role="destructive"
+                      onPress={() =>
+                        save(
+                          accounts.filter((it) => it.email !== account.email),
+                        )
+                      }
+                    />
+                  </SwipeActions.Actions>
+                </SwipeActions>
+              ))}
             </Section>
           </Form>
           <Toolbar.Content>
