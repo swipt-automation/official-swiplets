@@ -1372,6 +1372,13 @@ export const rules: Record<string, (Rule | Rule[])[]> = {
     { class: "BFCBusinessSplashSwift.BusinessSplashSkipButton" },
     skip("BFCEventSplashSkipButton"),
   ],
+  "tv.douyu.live": [
+    {
+      class: "UIButton",
+      label: /^(?:\d+s?\s*)?跳过/,
+      within: { class: /^(?:DYAdSplashView|DYLaunchAd\w*View)$/ },
+    },
+  ],
   "uni.UNI9C779C3": [sdk.dcloud],
   "xingxiong.com.lvya": [sdk.gdt],
   youdaoPro: [
