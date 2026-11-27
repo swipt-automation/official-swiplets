@@ -446,6 +446,14 @@ export const rules: Record<string, (Rule | Rule[])[]> = {
     sdk.tobid,
     sdk.ubix,
   ],
+  "com.enjiai.sign": [
+    sdk.tobid,
+    sdk.beizi,
+    sdk.csj,
+    sdk.gdt,
+    sdk.kuaishou,
+    sdk.meishu,
+  ],
   "com.fish.weather.mm": [sdk.csj, sdk.gdt],
   "com.foooooot.xingzong": [sdk.csj, sdk.gdt],
   "com.fq.music": [sdk.bytedance],
@@ -497,7 +505,16 @@ export const rules: Record<string, (Rule | Rule[])[]> = {
   "com.hmctsix.audioBooks": [sdk.baidu, sdk.csj, sdk.gdt, sdk.kuaishou],
   "com.hnair.mobile": [sdk.dcloud],
   "com.huaxiaozhu.rider": [sdk.gdt, sdk.kuaishou],
-  "com.hunantv.imgotv": [sdk.beizi, sdk.csj, sdk.gdt, sdk.ubix],
+  "com.hunantv.imgotv": [
+    {
+      class: /^(?:WebAccessibilityObjectWrapper|UILabel|UIButton)$/,
+      label: /^(?:\d+s?\s*)?跳过(?:\s*\d+s?)?$/,
+    },
+    sdk.beizi,
+    sdk.csj,
+    sdk.gdt,
+    sdk.ubix,
+  ],
   "com.hupu.games.pro": [
     {
       class: "UILabel",
@@ -550,6 +567,7 @@ export const rules: Record<string, (Rule | Rule[])[]> = {
   ],
   "com.jieruitech1.JINGJIANG-iOS": [sdk.beizi, sdk.csj, sdk.gdt],
   "com.jindk.ZipMaster": [
+    { class: "UILabel", label: /^\s*\d+s?\s+跳过\s*$/i },
     sdk.baidu,
     sdk.csj,
     sdk.gdt,
@@ -2053,7 +2071,11 @@ export const closeRules: Record<string, (Close | Close[])[]> = {
     sdkClose.kuaishou,
     sdkClose.qumeng,
   ],
-  "com.hunantv.imgotv": [sdkClose.beizi, sdkClose.csj],
+  "com.hunantv.imgotv": [
+    closeIn("TemplateLayerTipsView", "Fullwindows_close"),
+    sdkClose.beizi,
+    sdkClose.csj,
+  ],
   "com.hupu.shihuo": [
     closeIn(
       "SHGoodsDetailModules.SHSubsidyCouponPop",
@@ -2126,6 +2148,7 @@ export const closeRules: Record<string, (Close | Close[])[]> = {
   "com.jieruitech1.JINGJIANG-iOS": [sdkClose.beizi, sdkClose.csj],
   "com.jindidata.SkyEyes": [sdkClose.umeng],
   "com.jindk.ZipMaster": [
+    closeIn("ZipMaster.ZMShopAdView", "shop_home_close"),
     sdkClose.csj,
     sdkClose.kuaishou,
     sdkClose.meishu,
