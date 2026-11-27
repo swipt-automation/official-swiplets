@@ -84,13 +84,11 @@ const sdk = {
     "KSAdSplashEndJumpView",
   ),
   meishu: {
-    label: /^跳过$/,
+    class: /^(?:MS|HR|LH)CircularProgressBar$/,
+    has: { label: /^跳过$/ },
     within: {
-      class: /^(?:MS|HR|LH)CircularProgressBar$/,
-      within: {
-        class:
-          /^(?:MS|HR|LH)(?:SplashScreenView|(?:MS|HR|LH|BU|BD|KS)NativeSplashView)$/,
-      },
+      class:
+        /^(?:MS|HR|LH)(?:SplashScreenView|(?:MS|HR|LH|BU|BD|KS)NativeSplashView)$/,
     },
   },
   mintegral: skip("MTGSplashCloseView"),
@@ -103,6 +101,11 @@ const sdk = {
     class: "UILabel",
     label: /^跳过/,
     within: { class: "CQSplashSkip" },
+  },
+  octopus: {
+    class: "UIButton",
+    label: /^(?:\d+s?\s*)?跳过/,
+    within: { class: "OctCountDownView" },
   },
   pangle: skip("PAGAppOpenAdSkipButton", "PAGSkipButton"),
   sdm: skip("SDMTSplashCloseView"),
@@ -265,6 +268,7 @@ export const rules: Record<string, (Rule | Rule[])[]> = {
     sdk.tobid,
     sdk.ubix,
     sdk.meishu,
+    sdk.octopus,
   ],
   "com.baidu.netdisk": [
     skip("BDNCNovelForceAdSkipView", "MentaVL44SkipAdButton"),
