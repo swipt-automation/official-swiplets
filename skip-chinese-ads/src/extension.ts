@@ -221,10 +221,11 @@ const skipByAccessibility = async (round: Round) => {
     }
     try {
       const tapping = Date.now();
+      const tapSignal = AbortSignal.any([round.skipping, claim.tap.aim.signal]);
       try {
         await accessibility.tap(found, {
-          timeoutMs: timeLeft,
-          signal: AbortSignal.any([round.skipping, claim.tap.aim.signal]),
+          timeoutMs: Math.min(timeLeft, 300),
+          signal: tapSignal,
         });
       } catch (error) {
         if (claim.tap.aim.signal.aborted && !round.skipping.aborted) {
@@ -233,8 +234,23 @@ const skipByAccessibility = async (round: Round) => {
         if ((error as Error).name !== "TimeoutError") {
           throw error;
         }
-        round.log(`${control} cannot be tapped: ${(error as Error).message}`);
-        continue;
+        // Splash overlays in separate UIWindows, WKWebViews, or status-bar regions often fail AXHitTest
+        // ("would reach ..."), even though hardware input.tap hits the skip button cleanly.
+        if (!found.offScreen && /would reach /.test((error as Error).message)) {
+          try {
+            await input.tap(found.point ?? centerOf(found.frame), {
+              signal: tapSignal,
+            });
+          } catch (tapError) {
+            if (claim.tap.aim.signal.aborted && !round.skipping.aborted) {
+              continue;
+            }
+            throw tapError;
+          }
+        } else {
+          round.log(`${control} cannot be tapped: ${(error as Error).message}`);
+          continue;
+        }
       }
       claim.tap.delivered = true;
       const tapMs = Date.now() - tapping;
